@@ -6,23 +6,10 @@ import Person from './Person/Person';
 class App extends Component {
   state = {
     persons: [
-      { name: 'Amir', age: 21},
-      { name: 'Ali', age: 23},
-      { name: 'Huespi', age: 25},
+      { id:'sadasd123', name: 'Amir', age: 21},
+      { id:'12asdasd', name: 'Ali', age: 23},
+      { id:'fgtrfv', name: 'Huespi', age: 25},
     ]
-  }
-
-  switchNameHangler = (newName) => {
-    // console.log('La funcion, funciona')
-    // this.state.persons[0].name = 'Maximiliano'
-    this.setState({
-      persons: [
-        { name: newName, age: 21},
-        { name: 'Ali - OnClick', age: 23},
-        { name: 'Huespi - OnClick', age: 22},
-      ]
-    })
-    console.log(this.state);
   }
 
   nameChangedHandler = (event) => {
@@ -36,6 +23,13 @@ class App extends Component {
     })
   }
   
+  deletePersonHandler = (personIndex) => {
+    // const persons = this.state.persons.splice() -> Copia todo el array;
+    const persons = [...this.state.persons];
+    persons.splice(personIndex,1);
+    this.setState({persons: persons});
+  }
+
   togglePersonHandler = () => {
     const doesShow = this.state.showPerson;
     this.setState({showPerson: !doesShow})
@@ -55,29 +49,16 @@ class App extends Component {
     if (this.state.showPerson){
       persons = (
         <div>
-          <Person 
-            name={this.state.persons[0].name} 
-            age={this.state.persons[0].age}/>
-
-          <Person 
-            name={this.state.persons[1].name} 
-            age={this.state.persons[1].age}
-            click = {this.switchNameHangler.bind(this, 'Amir!')}
-            change = {this.nameChangedHandler}/>
-
-          <Person 
-            name={this.state.persons[2].name} 
-            age={this.state.persons[2].age}/>
-
-          <Person name="AmirFS" age="21">Y juego bien al futbol</Person>
-          <Person name="AliFS" age="22"/>
-
+          {this.state.persons.map((person,index) => {
+            return <Person
+              click={() => this.deletePersonHandler(index)} 
+              name={person.name}
+              age={person.age}
+              key={person.id} />
+          })}
         </div>
       )
     }
-
-
-
 
     return ( 
         <div className = "App">
